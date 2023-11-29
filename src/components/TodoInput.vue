@@ -5,16 +5,27 @@
             <p class="addBtn">add</p>
             <!-- <i class="fa-solid fa-plus"></i> -->
         </span>
+
+        <modal v-if="showModal" @close="showModal = false">
+            <template v-slot:header>
+                <i class="closeModalBtn fas fa-times-circle" v-on:click="showModal = false">경고!</i>
+            </template>
+            <template v-slot:body>아무것도 입력하지 않았습니다.</template>
+            <!-- <template v-slot:footer>copy right</template> -->
+        </modal>
     </div>
 </template>
 
 <script>
+import Modal from './common/AlertModal.vue';
+
 export default {
     name: 'TodoInput',
 
-    data() {
+    data: function() {
         return {
-            newTodoItem: ""
+            newTodoItem: "",
+            showModal: false
         };
     },
     methods: {
@@ -22,11 +33,16 @@ export default {
             if (this.newTodoItem !== ''){
                 this.$emit('addTodoItem', this.newTodoItem);
                 this.clearInput();
+            } else {
+                this.showModal = !this.showModal;
             }
         },
         clearInput: function() {
             this.newTodoItem = '';
         }
+    },
+    components: {
+        Modal: Modal
     }
 };
 </script>
@@ -55,5 +71,8 @@ input:focus {
 .addBtn {
     color: white;
     vertical-align: middle;
+}
+.closeModalBtn {
+    color: #42b983;
 }
 </style>
